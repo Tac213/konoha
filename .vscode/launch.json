@@ -1,0 +1,14 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch Debug",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "konoha",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "preLaunchTask": "Compile Qt Resource"
+        }
+    ]
+}

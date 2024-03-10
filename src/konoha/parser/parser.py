@@ -1,0 +1,22 @@
+# -*- coding: utf-8 -*-
+# author: Tac
+# contact: cookiezhx@163.com
+
+import io
+import ast
+from konoha.parser import ast_extension
+
+
+def parse_by_file_path(file_path: str) -> ast.AST:
+    """
+    Parse ast by file path
+    """
+    with io.open_code(file_path) as fp:
+        tree = ast_extension.parse(fp.read(), filename=file_path)
+    print(ast.dump(tree, indent=4))
+    return tree
+
+
+def unparse_to_file_path(tree: ast.AST, file_path) -> None:
+    with io.open(file_path, "w", encoding="utf-8") as fp:
+        fp.write(ast_extension.unparse(tree))
