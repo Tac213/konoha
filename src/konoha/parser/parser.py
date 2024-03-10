@@ -4,6 +4,9 @@
 
 import io
 import ast
+
+import black
+
 from konoha.parser import ast_extension
 
 
@@ -19,4 +22,6 @@ def parse_by_file_path(file_path: str) -> ast.AST:
 
 def unparse_to_file_path(tree: ast.AST, file_path) -> None:
     with io.open(file_path, "w", encoding="utf-8") as fp:
-        fp.write(ast_extension.unparse(tree))
+        content = ast_extension.unparse(tree)
+        content = black.format_str(content, mode=black.Mode())
+        fp.write(content)

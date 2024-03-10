@@ -12,6 +12,7 @@ ApplicationWindow {
     width: 800
     height: 600
     visible: true
+    property var currentASTVM: undefined
 
     menuBar: MenuBar {
         Menu {
@@ -83,8 +84,7 @@ ApplicationWindow {
         currentFolder: fileUrlHelper.root_dir
         onAccepted: () => {
             const fileURL = this.selectedFile.toString();
-            const rootVM = fileEditor.open_file(fileURL);
-            console.log(rootVM.body);
+            currentASTVM = fileEditor.open_file(fileURL);
         }
     }
 
@@ -94,5 +94,9 @@ ApplicationWindow {
         fileMode: FileDialog.SaveFile
         nameFilters: ["Python files (*.py)"]
         currentFolder: fileUrlHelper.root_dir
+        onAccepted: () => {
+            const fileURL = this.selectedFile.toString();
+            fileEditor.save_file(fileURL, currentASTVM);
+        }
     }
 }

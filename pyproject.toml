@@ -14,12 +14,12 @@ authors = [
 ]
 dependencies = [
     "pyside6",
+    "black",
 ]
 
 [project.optional-dependencies]
 dev = [
     "pylint",
-    "black",
     "pyinstaller>=6.4.0",
     "nuitka",
     "toml"

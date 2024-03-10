@@ -29,3 +29,8 @@ class FileEditor(QtCore.QObject):
         root_node = self._file_editor.open_file(file_path)
         tree_vm = astvms.create_astvm(root_node)
         return tree_vm
+
+    @QtCore.Slot(str, astvm.mod_vm)
+    def save_file(self, file_url: str, tree_vm: astvm.mod_vm) -> None:
+        file_path = utils.parse_file_path_by_url(file_url)
+        self._file_editor.save_file(file_path, tree_vm.model)
