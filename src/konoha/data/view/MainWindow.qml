@@ -1,7 +1,9 @@
 import QtQuick
 import QtQuick.Window
 import QtQuick.Controls
+import QtQuick.Layouts
 import QtQuick.Dialogs
+import "ScratchComponents" as ScratchComponents
 import Python.FileUrlHelper  // qmllint disable import
 import Python.FileEditor  // qmllint disable import
 
@@ -50,6 +52,14 @@ ApplicationWindow {
                     root.toggleConsoleWindow();
                 }
             }
+        }
+    }
+    RowLayout {
+        anchors.fill: parent
+        ScratchComponents.ScratchView {
+            id: scratchView
+            Layout.fillWidth: true
+            Layout.fillHeight: true
         }
     }
 
