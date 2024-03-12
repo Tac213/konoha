@@ -25,6 +25,9 @@ class ASTVM(QtCore.QObject, metaclass=advanced_qt_property.QObjectMeta):  # pyli
     is_code_block = advanced_qt_property.AdvancedQtProperty(bool)  # type: bool
     node_description = advanced_qt_property.AdvancedQtProperty(str)  # type: str
     node_block_descriptions = advanced_qt_property.AdvancedQtProperty("QVariantList")  # type: list[str]
+    argument_property_names = advanced_qt_property.AdvancedQtProperty("QVariantList")  # type: list[str]
+    input_argument_type_map = advanced_qt_property.AdvancedQtProperty("QVariant")  # type: dict[str, str]
+    code_block_map = advanced_qt_property.AdvancedQtProperty("QVariant")  # type: dict[str, int]
 
     def __init__(self, parent: QtCore.QObject | None = None) -> None:
         super().__init__(parent)
@@ -39,6 +42,9 @@ class ASTVM(QtCore.QObject, metaclass=advanced_qt_property.QObjectMeta):  # pyli
         self._is_code_block = False
         self._node_description = ""
         self._node_block_descriptions = []
+        self._argument_property_names = []
+        self._input_argument_type_map = {}
+        self._code_block_map = []
 
     def initialize(self, model: ast.AST) -> None:
         self.model = model

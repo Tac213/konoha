@@ -8,27 +8,62 @@ QtObject {
 
     function loadASTVM(astvm) {
         this.astvm = astvm;
-        if (this.astvm.body.length === 0) {
+        let index = 0;
+        const onNodeCreated = node => {
+            const stmt = this.astvm.body[++index];
+            if (!stmt) {
+                return;
+            }
+            this.createStatement(stmt, onNodeCreated, node);
+        };
+        const firstASTVM = this.astvm.body[index];
+        if (!firstASTVM) {
             return;
         }
-        let lastASTVM = this.astvm.body[0];
-        for (const stmt of this.astvm.body) {
-            this.createStatement(stmt, stmt === lastASTVM ? undefined : lastASTVM);
-            lastASTVM = stmt;
-        }
+        this.createStatement(firstASTVM, onNodeCreated);
     }
 
-    function createStatement(stmt, upperNode = undefined, isBlock = false, blockIndex = 0, posX = 100, posY = 100) {
+    function createStatement(stmt, onCreated = undefined, upperNode = undefined, isBlock = false, blockIndex = 0, posX = 100, posY = 100) {
         this.scene.createNode(stmt, posX, posY, node => {
+            const argElementMap = new Map();
+            for (const argElement of node.contentArgs) {
+                argElementMap.set(argElement.argName, argElement);
+            }
+            // create sub-expr recursively
+            for (const argPropertyName of stmt.argument_property_names) {
+                // TODO: create literal input qml components
+                const argASTVM = stmt[argPropertyName];
+                const argElement = argElementMap.get(argPropertyName);
+                this.createExpression(argASTVM, undefined, argElement);
+            }
+            // create in-block sub-stmt recursively
+            for (const [blockPropertyName, blockIndex] of stmt.code_block_map) {
+                const blockASTVMs = stmt[blockPropertyName];
+                let index = 0;
+                const onBlockNodeCreated = blockNode => {
+                    const stmt = this.astvm.body[++index];
+                    if (!stmt) {
+                        return;
+                    }
+                    this.createStatement(stmt, onBlockNodeCreated, blockNode);
+                };
+                const firstBlockASTVM = blockASTVMs[index];
+                if (!firstBlockASTVM) {
+                    continue;
+                }
+                this.createStatement(firstASTVM, onBlockNodeCreated, node, true, blockIndex);
+            }
+            // call onCreated
+            onCreated?.call(undefined, node);
+            // try to snap current node to the upper node
             if (upperNode === undefined) {
                 return;
             }
             this.snapStatement(upperNode, node, isBlock, blockIndex);
         });
-    // TODO: create sub-stmt and sub-expr recursively
     }
 
-    function createExpression(expr) {
+    function createExpression(expr, onCreated = undefined, argElement = undefined, posX = 100, posY = 100) {
     }
 
     function snapExpression(expressionNode, argElement) {

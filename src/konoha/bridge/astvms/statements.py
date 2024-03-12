@@ -55,6 +55,8 @@ class Expr(astvm.stmt_vm):
     def initialize(self, model: ast.Expr) -> None:
         super().initialize(model)
         self._value = astvms.create_astvm(model.value)
+        self._node_description = "{{ value }}"
+        self._argument_property_names = ["value"]
 
 
 @astvms.ast_node(astvm.stmt_vm)
