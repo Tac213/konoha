@@ -20,6 +20,11 @@ class ASTVM(QtCore.QObject, metaclass=advanced_qt_property.QObjectMeta):  # pyli
     end_lineno = advanced_qt_property.AdvancedQtProperty(int)  # type: int
     end_col_offset = advanced_qt_property.AdvancedQtProperty(int)  # type: int
     type_comment = advanced_qt_property.AdvancedQtProperty(str)  # type: str
+    # Editor specific
+    is_statement = advanced_qt_property.AdvancedQtProperty(bool)  # type: bool
+    is_code_block = advanced_qt_property.AdvancedQtProperty(bool)  # type: bool
+    node_description = advanced_qt_property.AdvancedQtProperty(str)  # type: str
+    node_block_descriptions = advanced_qt_property.AdvancedQtProperty("QVariantList")  # type: list[str]
 
     def __init__(self, parent: QtCore.QObject | None = None) -> None:
         super().__init__(parent)
@@ -29,6 +34,11 @@ class ASTVM(QtCore.QObject, metaclass=advanced_qt_property.QObjectMeta):  # pyli
         self._end_lineno = 0
         self._end_col_offset = 0
         self._type_comment = ""
+        # Editor specific
+        self._is_statement = False
+        self._is_code_block = False
+        self._node_description = ""
+        self._node_block_descriptions = []
 
     def initialize(self, model: ast.AST) -> None:
         self.model = model
@@ -60,6 +70,10 @@ class stmt_vm(ASTVM):  # pylint: disable=invalid-name
     """
     View Model of ast.stmt
     """
+
+    def initialize(self, model: ast.stmt) -> None:
+        super().initialize(model)
+        self._is_statement = True
 
 
 class expr_vm(ASTVM):  # pylint: disable=invalid-name

@@ -5,11 +5,17 @@ Flickable {
     clip: true
     contentWidth: scene.width
     contentHeight: scene.height
-    contentX: 0.5 * scene.width - 0.5 * this.width
-    contentY: 0.5 * scene.height - 0.5 * this.height
+    contentX: 0
+    contentY: 0
 
     ScratchScene {
         id: scene
+    }
+
+    ScratchHandler {
+        id: handler
+        scene: scene
+        view: root
     }
 
     MouseArea {
@@ -40,5 +46,13 @@ Flickable {
         scene.scaler.yScale = targetZoom;
         this.resizeContent(scene.width * scene.currentZoom, scene.height * scene.currentZoom, Qt.point(posX, posY));
         this.returnToBounds();
+    }
+
+    function loadASTVM(astvm) {
+        handler.loadASTVM(astvm);
+    }
+
+    function getASTVM() {
+        return handler.astvm;
     }
 }

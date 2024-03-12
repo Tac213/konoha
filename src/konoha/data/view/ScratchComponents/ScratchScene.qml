@@ -1,10 +1,11 @@
 import QtQuick
+import "../script/component-creation.js" as ComponentCreation
 
 Item {
     id: scene
     objectName: 'konohaScene'
-    width: 12000
-    height: 12000
+    width: 1600
+    height: 1600
     transform: Scale {
         id: sceneScaler
         origin.x: 0
@@ -41,7 +42,21 @@ Item {
         }
     }
 
+    function createNode(nodeModel, posX, posY, onCreated) {
+        new ComponentCreation.ComponentCreation('qrc:/konoha/view/ScratchComponents/Items/Node.qml', this, {
+            "model": nodeModel,
+            "x": posX,
+            "y": posY
+        }, node => {
+            onCreated(node);
+        });
+    }
+
     function getView() {
         return this.parent.parent;
+    }
+
+    function getHandler() {
+        return this.parent.parent.getHandler();
     }
 }

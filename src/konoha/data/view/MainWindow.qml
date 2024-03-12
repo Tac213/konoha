@@ -14,7 +14,6 @@ ApplicationWindow {
     width: 800
     height: 600
     visible: true
-    property var currentASTVM: undefined
 
     menuBar: MenuBar {
         Menu {
@@ -94,7 +93,8 @@ ApplicationWindow {
         currentFolder: fileUrlHelper.root_dir
         onAccepted: () => {
             const fileURL = this.selectedFile.toString();
-            currentASTVM = fileEditor.open_file(fileURL);
+            const astvm = fileEditor.open_file(fileURL);
+            scratchView.loadASTVM(astvm);
         }
     }
 
@@ -106,7 +106,7 @@ ApplicationWindow {
         currentFolder: fileUrlHelper.root_dir
         onAccepted: () => {
             const fileURL = this.selectedFile.toString();
-            fileEditor.save_file(fileURL, currentASTVM);
+            fileEditor.save_file(fileURL, scratchView.getASTVM());
         }
     }
 }
