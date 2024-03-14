@@ -229,16 +229,27 @@ Item {
             }
             if (idx < argList.length) {
                 const argName = argList[idx];
-                new ComponentCreation.ComponentCreation('qrc:/konoha/view/ScratchComponents/Items/NodeContentArgument.qml', root, {
-                    "index": idx,
-                    "argName": argName
-                }, argElement => {
-                    this.contentArgs.push(argElement);
-                    current++;
-                    if (current >= total) {
-                        this.layoutContents();
-                    }
-                });
+                const inputType = this.model.input_argument_type_map[argName];
+                if (inputType) {
+                    this._createInputArg(argName, idx, inputType, inputElement => {
+                        this.contentArgs.push(inputElement);
+                        current++;
+                        if (current >= total) {
+                            this.layoutContents();
+                        }
+                    });
+                } else {
+                    new ComponentCreation.ComponentCreation('qrc:/konoha/view/ScratchComponents/Items/NodeContentArgument.qml', root, {
+                        "index": idx,
+                        "argName": argName
+                    }, argElement => {
+                        this.contentArgs.push(argElement);
+                        current++;
+                        if (current >= total) {
+                            this.layoutContents();
+                        }
+                    });
+                }
                 total++;
             }
         });
@@ -320,6 +331,16 @@ Item {
             "textList": textList,
             "argList": argList
         };
+    }
+
+    function _createInputArg(argName, index, inputType, onCreated) {
+        new ComponentCreation.ComponentCreation('qrc:/konoha/view/ScratchComponents/Items/NodeContentTextField.qml', root, {
+            "index": index,
+            "argName": argName,
+            "inputType": inputType
+        }, textField => {
+            onCreated?.call(undefined, textField);
+        });
     }
 
     function layoutContents() {

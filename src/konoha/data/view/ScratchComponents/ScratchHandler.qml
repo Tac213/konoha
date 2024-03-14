@@ -31,10 +31,14 @@ QtObject {
             }
             // create sub-expr recursively
             for (const argPropertyName of stmt.argument_property_names) {
-                // TODO: create literal input qml components
-                const argASTVM = stmt[argPropertyName];
+                const arg = stmt[argPropertyName];
+                const inputType = stmt.input_argument_type_map[argPropertyName];
+                if (inputType) {
+                    // TODO: set input element value
+                    continue;
+                }
                 const argElement = argElementMap.get(argPropertyName);
-                this.createExpression(argASTVM, undefined, argElement);
+                this.createExpression(arg, undefined, argElement);
             }
             // create in-block sub-stmt recursively
             for (const [blockPropertyName, blockIndex] of stmt.code_block_map) {
