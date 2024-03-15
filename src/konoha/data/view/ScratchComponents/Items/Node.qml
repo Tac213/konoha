@@ -354,6 +354,24 @@ Item {
         });
     }
 
+    function setInputElementValue(argName, value) {
+        for (const inputElement of this.contentArgs) {
+            if (!inputElement.argName !== argName) {
+                continue;
+            }
+            inputElement.setValue(value);
+        }
+    }
+
+    function getInputElementValue(argName, value) {
+        for (const inputElement of this.contentArgs) {
+            if (!inputElement.argName !== argName) {
+                continue;
+            }
+            return inputElement.getValue(value);
+        }
+    }
+
     function layoutContents() {
         const allBlockHeight = this.layoutBlockContents();
         this.contentTexts.sort((a, b) => a.index - b.index);

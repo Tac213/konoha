@@ -28,4 +28,15 @@ TextField {
         }
     }
     validator: validatorLoader.item
+
+    function setValue(value) {
+        this.text = "" + value;
+    }
+
+    function getValue(value) {
+        if (this.inputType === "int" || this.inputType === "float") {
+            return Number(this.text);
+        }
+        return this.text;
+    }
 }

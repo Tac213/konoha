@@ -34,7 +34,7 @@ QtObject {
                 const arg = stmt[argPropertyName];
                 const inputType = stmt.input_argument_type_map[argPropertyName];
                 if (inputType) {
-                    // TODO: set input element value
+                    node.setInputElementValue(argPropertyName, arg);
                     continue;
                 }
                 const argElement = argElementMap.get(argPropertyName);
