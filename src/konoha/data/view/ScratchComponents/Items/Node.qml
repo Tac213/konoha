@@ -284,16 +284,27 @@ Item {
                 }
                 if (idx < argList.length) {
                     const argName = argList[idx];
-                    new ComponentCreation.ComponentCreation('qrc:/konoha/view/ScratchComponents/Items/NodeContentArgument.qml', root, {
-                        "index": idx,
-                        "argName": argName
-                    }, argElement => {
-                        this.blockContents[index].contentArgs.push(argElement);
-                        current++;
-                        if (current >= total) {
-                            this.layoutContents();
-                        }
-                    });
+                    const inputType = this.model.input_argument_type_map[argName];
+                    if (inputType) {
+                        this._createInputArg(argName, idx, inputType, inputElement => {
+                            this.blockContents[index].contentArgs.push(inputElement);
+                            current++;
+                            if (current >= total) {
+                                this.layoutContents();
+                            }
+                        });
+                    } else {
+                        new ComponentCreation.ComponentCreation('qrc:/konoha/view/ScratchComponents/Items/NodeContentArgument.qml', root, {
+                            "index": idx,
+                            "argName": argName
+                        }, argElement => {
+                            this.blockContents[index].contentArgs.push(argElement);
+                            current++;
+                            if (current >= total) {
+                                this.layoutContents();
+                            }
+                        });
+                    }
                     total++;
                 }
             });
