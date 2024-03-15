@@ -77,6 +77,9 @@ class Comment(astvm.stmt_vm):
         super().initialize(model)
         self._value = model.value
         self._inline = model.inline
+        self._node_description = "# {{ value }}"
+        self._argument_property_names = ["value"]
+        self._input_argument_type_map["value"] = "str"
 
 
 if sys.version_info >= (3, 10):

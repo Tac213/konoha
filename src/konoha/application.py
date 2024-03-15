@@ -2,7 +2,9 @@
 # author: Tac
 # contact: cookiezhx@163.com
 
+import sys
 import argparse
+from importlib import resources
 
 from PySide6 import QtCore, QtGui, QtQml
 from PySide6 import QtQuick  # pylint: disable=unused-import
@@ -12,6 +14,7 @@ from konoha import bridge
 from konoha import genv
 from konoha.const import app_const
 from konoha.log import qt_message_handler
+from konoha.utils import enhanced_qml_application_engine
 from konoha import resource_view_rc  # pylint: disable=import-error,unused-import
 
 
@@ -40,10 +43,20 @@ def main(args) -> int:
 
     bridge.register_bridges()
     bridge.initialize_bridge_objects()
-    engine = QtQml.QQmlApplicationEngine()
+    if getattr(sys, "frozen", False):
+        engine = enhanced_qml_application_engine.EnhancedQmlApplicationEngine("qrc:/konoha/view/MainWindow.qml")
+    else:
+        engine = enhanced_qml_application_engine.EnhancedQmlApplicationEngine(
+            resources.files("konoha.data.view").joinpath("MainWindow.qml")
+        )
     genv.initialize(engine)
-    engine.root_context().set_context_properties(bridge.get_bridge_objects())
-    engine.load(":/konoha/view/MainWindow.qml")
+    bridge_objects = bridge.get_bridge_objects()
+    property_pair = QtQml.QQmlContext.PropertyPair()
+    property_pair.name = "qmlEngine"
+    property_pair.value = engine
+    bridge_objects.append(property_pair)
+    engine.root_context().set_context_properties(bridge_objects)
+    engine.load_entry_qml()
     if not engine.root_objects():
         return -1
 

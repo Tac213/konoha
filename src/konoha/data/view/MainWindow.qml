@@ -51,6 +51,13 @@ ApplicationWindow {
                     root.toggleConsoleWindow();
                 }
             }
+            MenuItem {
+                text: qsTr("&Reload Qml")
+                onTriggered: () => {
+                    qmlEngine.reload();
+                    root.close();
+                }
+            }
         }
     }
     RowLayout {
@@ -67,6 +74,9 @@ ApplicationWindow {
         Keys.onPressed: event => {
             if (event.key === Qt.Key_QuoteLeft) {
                 root.toggleConsoleWindow();
+            } else if (event.key === Qt.Key_F5) {
+                qmlEngine.reload();
+                root.close();
             }
         }
     }
