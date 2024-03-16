@@ -4,6 +4,7 @@
 
 import ast
 import typing
+import itertools
 
 from PySide6 import QtCore
 
@@ -218,6 +219,9 @@ class Name(astvm.expr_vm):
 
     def initialize(self, model: ast.Name) -> None:
         super().initialize(model)
+        self._node_description = "  {{ id }}"
+        self._argument_property_names.extend(("id",))
+        self._input_argument_type_map["id"] = "variable"
         self._id = model.id
         self._ctx = astvms.create_astvm(model.ctx)
 
@@ -246,6 +250,9 @@ class Constant(astvm.expr_vm):
 
     def initialize(self, model: ast.Constant) -> None:
         super().initialize(model)
+        self._node_description = "  {{ value }}"
+        self._argument_property_names.extend(("value",))
+        self._input_argument_type_map["value"] = model.value.__class__.__name__
         self._value = model.value
         self._kind = model.kind
         self._s = model.s
@@ -275,6 +282,25 @@ class Call(astvm.expr_vm):
 
     def initialize(self, model: ast.Call) -> None:
         super().initialize(model)
+        args_names = [f"{{{{ args_{index} }}}}" for index in range(len(model.args))]
+        keywords_names = [f"{{{{ keywords_{index} }}}}" for index in range(len(model.keywords))]
+        args_names_no_brackets = [f"args_{index}" for index in range(len(model.args))]
+        keywords_names_no_brackets = [f"keywords_{index}" for index in range(len(model.keywords))]
+        args_desc = ", ".join(args_names)
+        keywords_desc = ", ".join(keywords_names)
+        all_args_desc = ""
+        if args_desc:
+            all_args_desc += args_desc
+            if keywords_desc:
+                all_args_desc += f", {keywords_desc}"
+        elif keywords_desc:
+            all_args_desc += keywords_desc
+        self._node_description = f"{{{{ func }}}}({all_args_desc})"
+        self._argument_property_names.append("func")
+        self._argument_property_names.extend(args_names_no_brackets)
+        self._argument_property_names.extend(keywords_names_no_brackets)
+        for list_item_name in itertools.chain(args_names_no_brackets, keywords_names_no_brackets):
+            self._input_argument_type_map[list_item_name] = "list_item"
         self._func = astvms.create_astvm(model.func)
         for entry in model.args:
             self._args.append(astvms.create_astvm(entry))

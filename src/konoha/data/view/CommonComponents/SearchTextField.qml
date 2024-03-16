@@ -29,7 +29,7 @@ RowLayout {
         display: AbstractButton.IconOnly
         implicitWidth: 28
         icon {
-            source: "qrc:/konoha/resource/svg/search.svg"
+            source: qmlEngine.get_file_url("resource/svg/search.svg")
         }
         ToolTip {
             visible: parent.hovered  // qmllint disable type

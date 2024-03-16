@@ -30,7 +30,7 @@ Window {
                     display: AbstractButton.IconOnly
                     implicitWidth: 28
                     icon {
-                        source: "qrc:/konoha/resource/svg/filter.svg"
+                        source: qmlEngine.get_file_url("resource/svg/filter.svg")
                     }
                     ToolTip {
                         visible: parent.hovered  // qmllint disable type
@@ -47,7 +47,7 @@ Window {
                     display: AbstractButton.IconOnly
                     implicitWidth: 28
                     icon {
-                        source: "qrc:/konoha/resource/svg/clear.svg"
+                        source: qmlEngine.get_file_url("resource/svg/clear.svg")
                     }
                     ToolTip {
                         visible: parent.hovered  // qmllint disable type
@@ -77,7 +77,7 @@ Window {
                     display: AbstractButton.IconOnly
                     implicitWidth: 28
                     icon {
-                        source: "qrc:/konoha/resource/svg/dropup.svg"
+                        source: qmlEngine.get_file_url("resource/svg/dropup.svg")
                     }
                     ToolTip {
                         visible: parent.hovered  // qmllint disable type
@@ -94,7 +94,7 @@ Window {
                     display: AbstractButton.IconOnly
                     implicitWidth: 28
                     icon {
-                        source: "qrc:/konoha/resource/svg/dropdown.svg"
+                        source: qmlEngine.get_file_url("resource/svg/dropdown.svg")
                     }
                     ToolTip {
                         visible: parent.hovered  // qmllint disable type

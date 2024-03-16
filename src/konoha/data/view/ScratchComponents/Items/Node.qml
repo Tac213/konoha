@@ -215,7 +215,7 @@ Item {
         let current = 0;
         textList.forEach((text, idx) => {
             if (text) {
-                new ComponentCreation.ComponentCreation('qrc:/konoha/view/ScratchComponents/Items/NodeContentText.qml', root, {
+                new ComponentCreation.ComponentCreation(qmlEngine.get_file_url("view/ScratchComponents/Items/NodeContentText.qml"), root, {
                     "index": idx,
                     "text": text
                 }, textElement => {
@@ -230,7 +230,7 @@ Item {
             if (idx < argList.length) {
                 const argName = argList[idx];
                 const inputType = this.model.input_argument_type_map[argName];
-                if (inputType) {
+                if (inputType && inputType !== "list_item") {
                     this._createInputArg(argName, idx, inputType, inputElement => {
                         this.contentArgs.push(inputElement);
                         current++;
@@ -239,7 +239,7 @@ Item {
                         }
                     });
                 } else {
-                    new ComponentCreation.ComponentCreation('qrc:/konoha/view/ScratchComponents/Items/NodeContentArgument.qml', root, {
+                    new ComponentCreation.ComponentCreation(qmlEngine.get_file_url("view/ScratchComponents/Items/NodeContentArgument.qml"), root, {
                         "index": idx,
                         "argName": argName
                     }, argElement => {
@@ -270,7 +270,7 @@ Item {
             const argList = parseResult.argList;
             textList.forEach((text, idx) => {
                 if (text) {
-                    new ComponentCreation.ComponentCreation('qrc:/konoha/view/ScratchComponents/Items/NodeContentText.qml', root, {
+                    new ComponentCreation.ComponentCreation(qmlEngine.get_file_url("view/ScratchComponents/Items/NodeContentText.qml"), root, {
                         "index": idx,
                         "text": text
                     }, textElement => {
@@ -285,7 +285,7 @@ Item {
                 if (idx < argList.length) {
                     const argName = argList[idx];
                     const inputType = this.model.input_argument_type_map[argName];
-                    if (inputType) {
+                    if (inputType && inputType !== "list_item") {
                         this._createInputArg(argName, idx, inputType, inputElement => {
                             this.blockContents[index].contentArgs.push(inputElement);
                             current++;
@@ -294,7 +294,7 @@ Item {
                             }
                         });
                     } else {
-                        new ComponentCreation.ComponentCreation('qrc:/konoha/view/ScratchComponents/Items/NodeContentArgument.qml', root, {
+                        new ComponentCreation.ComponentCreation(qmlEngine.get_file_url("view/ScratchComponents/Items/NodeContentArgument.qml"), root, {
                             "index": idx,
                             "argName": argName
                         }, argElement => {
@@ -308,7 +308,7 @@ Item {
                     total++;
                 }
             });
-            new ComponentCreation.ComponentCreation('qrc:/konoha/view/ScratchComponents/Items/CodeBlockSnapIndicator.qml', root, {
+            new ComponentCreation.ComponentCreation(qmlEngine.get_file_url("view/ScratchComponents/Items/CodeBlockSnapIndicator.qml"), root, {
                 "index": index
             }, snapIndicator => {
                 snapIndicator.z = this.z - 1;
@@ -345,7 +345,7 @@ Item {
     }
 
     function _createInputArg(argName, index, inputType, onCreated) {
-        new ComponentCreation.ComponentCreation('qrc:/konoha/view/ScratchComponents/Items/NodeContentTextField.qml', root, {
+        new ComponentCreation.ComponentCreation(qmlEngine.get_file_url("view/ScratchComponents/Items/NodeContentTextField.qml"), root, {
             "index": index,
             "argName": argName,
             "inputType": inputType

@@ -31,13 +31,21 @@ QtObject {
             }
             // create sub-expr recursively
             for (const argPropertyName of stmt.argument_property_names) {
-                const arg = stmt[argPropertyName];
+                let arg;
                 const inputType = stmt.input_argument_type_map[argPropertyName];
                 const argElement = argElementMap.get(argPropertyName);
                 if (inputType) {
-                    argElement.setValue(arg);
+                    if (inputType == "list_item") {
+                        const [realArgName, argIndex] = argPropertyName.split(/_/);
+                        arg = stmt[realArgName][Number(argIndex)];
+                        this.createExpression(arg, undefined, argElement);
+                    } else {
+                        arg = stmt[argPropertyName];
+                        argElement.setValue(arg);
+                    }
                     continue;
                 }
+                arg = stmt[argPropertyName];
                 this.createExpression(arg, undefined, argElement);
             }
             // create in-block sub-stmt recursively
@@ -68,6 +76,38 @@ QtObject {
     }
 
     function createExpression(expr, onCreated = undefined, argElement = undefined, posX = 100, posY = 100) {
+        this.scene.createNode(expr, posX, posY, node => {
+            const argElementMap = new Map();
+            for (const contentArgElement of node.contentArgs) {
+                argElementMap.set(contentArgElement.argName, contentArgElement);
+            }
+            // create sub-expr recursively
+            for (const argPropertyName of expr.argument_property_names) {
+                let arg;
+                const inputType = expr.input_argument_type_map[argPropertyName];
+                const contentArgElement = argElementMap.get(argPropertyName);
+                if (inputType) {
+                    if (inputType == "list_item") {
+                        const [realArgName, argIndex] = argPropertyName.split(/_/);
+                        arg = expr[realArgName][Number(argIndex)];
+                        this.createExpression(arg, undefined, contentArgElement);
+                    } else {
+                        arg = expr[argPropertyName];
+                        contentArgElement.setValue(arg);
+                    }
+                    continue;
+                }
+                arg = expr[argPropertyName];
+                this.createExpression(arg, undefined, contentArgElement);
+            }
+            // call onCreated
+            onCreated?.call(undefined, node);
+            // try to snap current node to the argument element
+            if (argElement === undefined) {
+                return;
+            }
+            this.snapExpression(node, argElement);
+        });
     }
 
     function snapExpression(expressionNode, argElement) {

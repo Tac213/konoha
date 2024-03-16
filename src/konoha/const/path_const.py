@@ -5,6 +5,7 @@
 import sys
 import os
 import pathlib
+from importlib import resources
 
 from PySide6 import QtCore
 from __feature__ import snake_case, true_property  # pylint: disable=import-error,unused-import
@@ -29,6 +30,9 @@ ROOT_PATH = (
         else pathlib.Path(__file__).parent.parent.parent.parent
     )  # Source code
 )
+
+DATA_PATH = resources.files("konoha").joinpath("data")
+DATA_DIR = str(DATA_PATH)
 
 LOCAL_APP_DATA_DIR = os.path.normpath(
     QtCore.QStandardPaths.standard_locations(QtCore.QStandardPaths.StandardLocation.AppLocalDataLocation)[0]

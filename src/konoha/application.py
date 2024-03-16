@@ -2,9 +2,7 @@
 # author: Tac
 # contact: cookiezhx@163.com
 
-import sys
 import argparse
-from importlib import resources
 
 from PySide6 import QtCore, QtGui, QtQml
 from PySide6 import QtQuick  # pylint: disable=unused-import
@@ -43,12 +41,7 @@ def main(args) -> int:
 
     bridge.register_bridges()
     bridge.initialize_bridge_objects()
-    if getattr(sys, "frozen", False):
-        engine = enhanced_qml_application_engine.EnhancedQmlApplicationEngine("qrc:/konoha/view/MainWindow.qml")
-    else:
-        engine = enhanced_qml_application_engine.EnhancedQmlApplicationEngine(
-            resources.files("konoha.data.view").joinpath("MainWindow.qml")
-        )
+    engine = enhanced_qml_application_engine.EnhancedQmlApplicationEngine("view/MainWindow.qml")
     genv.initialize(engine)
     bridge_objects = bridge.get_bridge_objects()
     property_pair = QtQml.QQmlContext.PropertyPair()

@@ -7,6 +7,7 @@ import ast
 
 import black
 
+from konoha import genv
 from konoha.parser import ast_extension
 
 
@@ -16,7 +17,7 @@ def parse_by_file_path(file_path: str) -> ast.AST:
     """
     with io.open_code(file_path) as fp:
         tree = ast_extension.parse(fp.read(), filename=file_path)
-    print(ast.dump(tree, indent=4))
+    genv.logger.info("AST of file '%s':\n%s", file_path, ast.dump(tree, indent=4))
     return tree
 
 

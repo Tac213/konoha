@@ -43,7 +43,7 @@ Item {
     }
 
     function createNode(nodeModel, posX, posY, onCreated) {
-        new ComponentCreation.ComponentCreation('qrc:/konoha/view/ScratchComponents/Items/Node.qml', this, {
+        new ComponentCreation.ComponentCreation(qmlEngine.get_file_url("view/ScratchComponents/Items/Node.qml"), this, {
             "model": nodeModel,
             "x": posX,
             "y": posY

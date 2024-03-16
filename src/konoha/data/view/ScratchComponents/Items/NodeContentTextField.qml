@@ -16,6 +16,12 @@ TextField {
         DoubleValidator {
         }
     }
+    Component {
+        id: variableValidator
+        RegularExpressionValidator {
+            regularExpression: /[a-zA-Z_]+[0-9a-zA-Z_]*/
+        }
+    }
     Loader {
         id: validatorLoader
         sourceComponent: {
@@ -23,6 +29,8 @@ TextField {
                 return intValidator;
             } else if (root.inputType == "float") {
                 return doubleValidator;
+            } else if (root.inputType == "variable") {
+                return variableValidator;
             }
             return undefined;
         }
