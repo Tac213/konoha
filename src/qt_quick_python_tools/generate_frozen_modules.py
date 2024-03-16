@@ -338,11 +338,10 @@ def print_frozen_header_file_names(entry_module_name: str, hidden_imports_arg: s
     print(";".join(headers))
 
 
-def make_freeze(freeze_module_exe: str, entry_module_name: str, hidden_imports_arg: str, excludes_arg: str) -> None:
+def make_freeze(entry_module_name: str, hidden_imports_arg: str, excludes_arg: str) -> None:
     """
     Generate all frozen headers for the entry_module_name
     Args:
-        entry_module: A python module name or a single python_file
         hidden_imports_arg: hidden import modules, e.g. --hidden-imports=xx,yy,aa.bb
         excludes_arg: excludes modules, e.g. --excludes=test,unittest
     Returns:
@@ -362,7 +361,10 @@ def make_freeze(freeze_module_exe: str, entry_module_name: str, hidden_imports_a
             module_info = get_module_info(module_name)
         header_name = f"{module_name}.h"
         header_path = os.path.join(FROZEN_MODULE_DIR, header_name)
-        with subprocess.Popen([freeze_module_exe, module_name, module_info.origin, header_path], stderr=subprocess.PIPE) as p:
+        with subprocess.Popen(
+            [sys.executable, "-m", "qt_quick_python_tools.freeze_module", module_name, module_info.origin, header_path],
+            stderr=subprocess.PIPE,
+        ) as p:
             p.wait()
             if p.returncode:
                 _, err = p.communicate()

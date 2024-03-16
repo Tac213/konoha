@@ -6,6 +6,11 @@
         "ms-python.black-formatter",
         "seanwu.vscode-qt-for-python",
         "esbenp.prettier-vscode",
-        "Gruntfuggly.triggertaskonsave"
-    ]
+        "Gruntfuggly.triggertaskonsave",
+        "llvm-vs-code-extensions.vscode-clangd",
+        "vadimcn.vscode-lldb",
+        "ms-vscode.cmake-tools",
+        "josetr.cmake-language-support-vscode"
+    ],
+    "unwantedRecommendations": ["ms-vscode.cpptools", "ms-vscode.cpptools-extension-pack"]
 }

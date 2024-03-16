@@ -6,7 +6,7 @@ import ast
 import importlib
 import typing
 
-from PySide6 import QtCore, QtQml
+from PySide6 import QtQml
 from __feature__ import snake_case, true_property  # pylint: disable=import-error,unused-import
 
 from konoha import genv

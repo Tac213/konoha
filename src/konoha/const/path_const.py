@@ -10,25 +10,13 @@ from importlib import resources
 from PySide6 import QtCore
 from __feature__ import snake_case, true_property  # pylint: disable=import-error,unused-import
 
-import konoha
-
 ROOT_DIR = (
-    getattr(sys, "_MEIPASS")  # PyInstaller
+    getattr(sys, "_stdlib_dir")
     if getattr(sys, "frozen", False)
-    else (
-        os.path.normpath(os.path.join(os.path.dirname(__file__), "..", ".."))  # Nuitka
-        if hasattr(konoha, "__compiled__")
-        else os.path.normpath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
-    )  # Source code
+    else os.path.normpath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
 )
 ROOT_PATH = (
-    pathlib.Path(getattr(sys, "_MEIPASS"))  # PyInstaller
-    if getattr(sys, "frozen", False)
-    else (
-        pathlib.Path(__file__).parent.parent.parent  # Nuitka
-        if hasattr(konoha, "__compiled__")
-        else pathlib.Path(__file__).parent.parent.parent.parent
-    )  # Source code
+    pathlib.Path(getattr(sys, "_stdlib_dir")) if getattr(sys, "frozen", False) else pathlib.Path(__file__).parent.parent.parent.parent
 )
 
 DATA_PATH = resources.files("konoha").joinpath("data")

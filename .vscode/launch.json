@@ -2,13 +2,31 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Launch Debug",
+            "name": "Launch Python",
             "type": "debugpy",
             "request": "launch",
             "module": "konoha",
             "console": "integratedTerminal",
             "justMyCode": false,
             "preLaunchTask": "Compile Qt Resource"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Launch C++",
+            "program": "${command:cmake.launchTargetPath}",
+            "args": ["-m", "konoha"],
+            "cwd": "${workspaceFolder}",
+            "internalConsoleOptions": "neverOpen",
+            "console": "integratedTerminal",
+            "env": {
+                "VIRTUAL_ENV": "${workspaceFolder}/.venv"
+            },
+            "windows": {
+                "env": {
+                    "VIRTUAL_ENV": "${workspaceFolder}\\.venv"
+                }
+            }
         }
     ]
 }

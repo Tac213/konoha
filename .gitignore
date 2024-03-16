@@ -14,6 +14,7 @@ venv
 *.log
 
 # deployment files
+deployment/
 deployment/build/
 deployment/dist/
 deployment/__main__.build/
@@ -23,6 +24,9 @@ deployment/__main__.app/
 # auto-generated resource files
 resource_view.qrc
 resource_view_rc.py
+
+# auto-generated header files
+src/frozen_modules
 
 # baked shader files
 *.qsb

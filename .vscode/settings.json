@@ -1,6 +1,8 @@
 {
     "files.associations": {
-        "**.spec": "python"
+        "**.spec": "python",
+        ".clang-format": "yaml",
+        ".clang-tidy": "yaml"
     },
     "files.exclude": {
         "**/.git": true,
@@ -13,6 +15,17 @@
         "**/venv": true,
         "**/__pycache__": true
     },
+    "cmake.configureOnOpen": true,
+    "cmake.generator": "Ninja",
+    "cmake.buildDirectory": "${workspaceFolder}/build/${buildType}",
+    "clangd.arguments": [
+        "--compile-commands-dir=${workspaceFolder}/build/Debug",
+        "--completion-style=detailed",
+        "--header-insertion=never",
+        "--background-index",
+        "-j=12",
+        "--clang-tidy"
+    ],
     "python.analysis.typeCheckingMode": "off",
     "[python]": {
         "editor.defaultFormatter": "ms-python.black-formatter",
@@ -20,6 +33,10 @@
     },
     "[javascript]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnSave": true
+    },
+    "[cmake]": {
+        "editor.defaultFormatter": "josetr.cmake-language-support-vscode",
         "editor.formatOnSave": true
     },
     "triggerTaskOnSave.tasks": {
