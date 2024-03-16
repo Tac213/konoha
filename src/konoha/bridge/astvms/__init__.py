@@ -12,6 +12,7 @@ from __feature__ import snake_case, true_property  # pylint: disable=import-erro
 from konoha import genv
 from konoha.bridge.astvms import astvm
 
+ASTVM_CATEGORY_SPLITTER = "|"
 ALL_ASTVM_MODULES = (
     "expressions",
     "statements",
@@ -19,7 +20,7 @@ ALL_ASTVM_MODULES = (
 )
 if "ASTVM_MAP" not in globals():
     # Prevent reload from resetting the global variable
-    ASTVM_MAP: dict[str, astvm.ASTVM] = {}
+    ASTVM_MAP: dict[str, type[astvm.ASTVM]] = {}
 # ASTVM_COMPONENT_MAP will be regenerated when reload is performed
 ASTVM_COMPONENT_MAP: dict[str, QtQml.QQmlComponent] = {}
 

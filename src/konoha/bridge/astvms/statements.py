@@ -22,6 +22,9 @@ class alias_vm(astvm.ASTVM):  # pylint: disable=invalid-name
     Both parameters are raw strings of the names. `asname` can be `None` if the regular name is to be used.
     """
 
+    astvm_name = "alias"
+    astvm_category = "Statements"
+
     name = advanced_qt_property.AdvancedQtProperty(str)  # type: str
     asname = advanced_qt_property.AdvancedQtProperty(str)  # type: typing.Optional[str]
 
@@ -46,6 +49,9 @@ class Expr(astvm.stmt_vm):
     Name, a Lambda, a Yield or YieldFrom node.
     """
 
+    astvm_name = "Expr"
+    astvm_category = "Statements"
+
     value = advanced_qt_property.AdvancedQtProperty(astvm.expr_vm)  # type: astvm.expr_vm
 
     def __init__(self, parent: QtCore.QObject | None = None) -> None:
@@ -64,6 +70,9 @@ class Comment(astvm.stmt_vm):
     """
     View Model of ast_extension.Comment
     """
+
+    astvm_name = "Comment"
+    astvm_category = "Statements"
 
     value = advanced_qt_property.AdvancedQtProperty(str)  # type: str
     inline = advanced_qt_property.AdvancedQtProperty(bool)  # type: bool
@@ -90,11 +99,17 @@ if sys.version_info >= (3, 10):
         View Model of ast.pattern
         """
 
+        astvm_name = "pattern"
+        astvm_category = "Pattern matching"
+
     @astvms.ast_node()
     class match_case_vm(astvm.ASTVM):  # pylint: disable=invalid-name
         """
         View Model of ast.match_case
         """
+
+        astvm_name = "match_case"
+        astvm_category = "Pattern matching"
 
         pattern = advanced_qt_property.AdvancedQtProperty(pattern_vm)  # type: pattern_vm
         guard = advanced_qt_property.AdvancedQtProperty(astvm.expr_vm)  # type: typing.Optional[astvm.expr_vm]

@@ -23,6 +23,8 @@ class ASTVM(QtCore.QObject, metaclass=advanced_qt_property.QObjectMeta):  # pyli
     end_col_offset = advanced_qt_property.AdvancedQtProperty(int)  # type: int
     type_comment = advanced_qt_property.AdvancedQtProperty(str)  # type: str
     # Editor specific
+    astvm_name = "Unknown"
+    astvm_category = ""
     is_statement = advanced_qt_property.AdvancedQtProperty(bool)  # type: bool
     is_code_block = advanced_qt_property.AdvancedQtProperty(bool)  # type: bool
     node_description = advanced_qt_property.AdvancedQtProperty(str)  # type: str

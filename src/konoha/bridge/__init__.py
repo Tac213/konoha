@@ -8,6 +8,7 @@ from PySide6 import QtQml
 from __feature__ import snake_case, true_property  # pylint: disable=import-error,unused-import
 
 ALL_BRIDGE_MODULES = (
+    "astvm_helper",
     "file_editor",
     "file_url_helper",
     "interactive_interpreter",

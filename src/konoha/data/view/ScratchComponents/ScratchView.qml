@@ -18,6 +18,11 @@ Flickable {
         view: root
     }
 
+    ScratchContextMenu {
+        id: scratchContextMenu
+        handler: handler
+    }
+
     MouseArea {
         anchors.fill: parent
         acceptedButtons: Qt.RightButton
@@ -27,8 +32,8 @@ Flickable {
         }
         onClicked: event => {
             if (event.button === Qt.RightButton) {
+                scratchContextMenu.buildAndPopup();
                 event.accepted = true;
-                console.log("Right Click");
             }
         }
     }

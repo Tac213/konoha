@@ -26,6 +26,9 @@ class comprehension_vm(astvm.ASTVM):  # pylint: disable=invalid-name
     an integer (0 or 1).
     """
 
+    astvm_name = "comprehension"
+    astvm_category = "Expressions|Comprehensions"
+
     target = advanced_qt_property.AdvancedQtProperty(astvm.expr_vm)  # type: astvm.expr_vm
     iter = advanced_qt_property.AdvancedQtProperty(astvm.expr_vm)  # type: astvm.expr_vm
     ifs = advanced_qt_property.AdvancedQtProperty("QVariantList")  # type: list[astvm.expr_vm]
@@ -57,6 +60,9 @@ class arg_vm(astvm.ASTVM):  # pylint: disable=invalid-name
     `type_comment` is an optional string with the type annotation as a comment
     """
 
+    astvm_name = "arg"
+    astvm_category = "Function and class definitions"
+
     arg = advanced_qt_property.AdvancedQtProperty(str)  # type: str
     annotation = advanced_qt_property.AdvancedQtProperty(astvm.expr_vm)  # type: str
 
@@ -84,6 +90,9 @@ class arguments_vm(astvm.ASTVM):  # pylint: disable=invalid-name
     - `defaults` is a list of default values for arguments that can be passed positionally. If there are fewer
       defaults, they correspond to the last n arguments.
     """
+
+    astvm_name = "arguments"
+    astvm_category = "Function and class definitions"
 
     posonlyargs = advanced_qt_property.AdvancedQtProperty("QVariantList")  # type: list[arg_vm]
     args = advanced_qt_property.AdvancedQtProperty("QVariantList")  # type: list[arg_vm]
@@ -133,6 +142,9 @@ class keyword_vm(astvm.ASTVM):  # pylint: disable=invalid-name
     is a node to pass in.
     """
 
+    astvm_name = "keyword"
+    astvm_category = "Expressions"
+
     arg = advanced_qt_property.AdvancedQtProperty(str)  # type: str
     value = advanced_qt_property.AdvancedQtProperty(astvm.expr_vm)  # type: astvm.expr_vm
 
@@ -155,6 +167,9 @@ class withitem_vm(astvm.ASTVM):  # pylint: disable=invalid-name
     A single context manager in a `with` block. `context_expr` is the context manager, often a Call node.
     `ptional_vars` is a Name, Tuple or List for the `as foo` part, or `None` if that isn't used.
     """
+
+    astvm_name = "withitem"
+    astvm_category = "Control flow"
 
     context_expr = advanced_qt_property.AdvancedQtProperty(astvm.expr_vm)  # type: astvm.expr_vm
     optional_vars = advanced_qt_property.AdvancedQtProperty(astvm.expr_vm)  # type: typing.Optional[astvm.expr_vm]
@@ -180,6 +195,9 @@ class Load(astvm.expr_context_vm):  # pylint: disable=invalid-name
     Variable references are given a context to distinguish these cases.
     """
 
+    astvm_name = "Load"
+    astvm_category = "Variable"
+
 
 @astvms.ast_node()
 class Store(astvm.expr_context_vm):  # pylint: disable=invalid-name
@@ -189,6 +207,9 @@ class Store(astvm.expr_context_vm):  # pylint: disable=invalid-name
     Variable references can be used to load the value of a variable, to assign a new value to it, or to delete it.
     Variable references are given a context to distinguish these cases.
     """
+
+    astvm_name = "Store"
+    astvm_category = "Variable"
 
 
 @astvms.ast_node()
@@ -200,6 +221,9 @@ class Del(astvm.expr_context_vm):  # pylint: disable=invalid-name
     Variable references are given a context to distinguish these cases.
     """
 
+    astvm_name = "Del"
+    astvm_category = "Variable"
+
 
 @astvms.ast_node(astvm.expr_vm)
 class Name(astvm.expr_vm):
@@ -208,6 +232,9 @@ class Name(astvm.expr_vm):
 
     A variable name. `id` holds the name as a string, and `ctx` is one of the following types.
     """
+
+    astvm_name = "Name"
+    astvm_category = "Variable"
 
     id = advanced_qt_property.AdvancedQtProperty(str)  # type: str
     ctx = advanced_qt_property.AdvancedQtProperty(astvm.expr_context_vm)  # type: astvm.expr_context_vm
@@ -235,6 +262,9 @@ class Constant(astvm.expr_vm):
     values represented can be simple types such as a number, string or `None`, but also immutable container
     types (tuples and frozensets) if all of their elements are constant.
     """
+
+    astvm_name = "Constant"
+    astvm_category = "Literals"
 
     value = advanced_qt_property.AdvancedQtProperty("QVariant")  # type: typing.Any
     kind = advanced_qt_property.AdvancedQtProperty(str)  # type: typing.Optional[str]
@@ -269,6 +299,9 @@ class Call(astvm.expr_vm):
     - `keywords` holds a list of keyword objects representing arguments passed by keyword.
     hen creating a `Call` node, `args` and `keywords` are required, but they can be empty lists.
     """
+
+    astvm_name = "Call"
+    astvm_category = "Expressions"
 
     func = advanced_qt_property.AdvancedQtProperty(astvm.expr_vm)  # type: astvm.expr_vm
     args = advanced_qt_property.AdvancedQtProperty("QVariantList")  # type: list[astvm.expr_vm]
