@@ -4,9 +4,11 @@
 
 import sys
 import ast
+import functools
 
 from PySide6 import QtCore
 
+from konoha import genv
 from konoha.utils import advanced_qt_property
 
 
@@ -58,6 +60,22 @@ class ASTVM(QtCore.QObject, metaclass=advanced_qt_property.QObjectMeta):  # pyli
             self._end_col_offset = model.end_col_offset
         if hasattr(model, "type_comment"):
             self._type_comment = model.type_comment
+
+    def post_initialize(self) -> None:
+        """
+        Connect to argument property signals
+        """
+        for property_name, input_type in self._input_argument_type_map.items():
+            if input_type == "list_item":
+                continue
+            signal = getattr(self, f"{property_name}_changed")
+            signal.connect(functools.partial(self._on_input_argument_changed, property_name))
+
+    def _on_input_argument_changed(self, property_name, previous_value) -> None:
+        property_value = getattr(self, property_name)
+        assert hasattr(self.model, property_name), f"'{self.model.__class__.__name__}' doesn't have attribute: {property_name}"
+        setattr(self.model, property_name, property_value)
+        genv.logger.debug("'%s' of %s has changed from %s to %s", property_name, self.model, previous_value, property_value)
 
 
 class mod_vm(ASTVM):  # pylint: disable=invalid-name

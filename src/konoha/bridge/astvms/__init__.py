@@ -89,6 +89,7 @@ def create_astvm(tree: ast.AST) -> astvm.ASTVM:
     assert vm is not None, "\n".join(error.to_string() for error in astvm_component.errors())
     assert isinstance(vm, astvm.ASTVM)
     vm.initialize(tree)
+    vm.post_initialize()
     return vm
 
 

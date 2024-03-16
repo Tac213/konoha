@@ -546,4 +546,8 @@ Item {
     function getBlockNextNode(index) {
         return this.blockNextNode.get(index);
     }
+
+    function updateModelArgValue(argName, value) {
+        this.model[argName] = value;
+    }
 }

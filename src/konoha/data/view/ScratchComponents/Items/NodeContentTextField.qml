@@ -36,12 +36,19 @@ TextField {
         }
     }
     validator: validatorLoader.item
+    onTextEdited: newText => {
+        this.getNode().updateModelArgValue(this.argName, this.getValue());
+    }
+
+    function getNode() {
+        return this.parent;
+    }
 
     function setValue(value) {
         this.text = "" + value;
     }
 
-    function getValue(value) {
+    function getValue() {
         if (this.inputType === "int" || this.inputType === "float") {
             return Number(this.text);
         }

@@ -11,6 +11,8 @@ import Python.Reloader  // qmllint disable import
 ApplicationWindow {
     id: root
 
+    property string currentFileUrl: ""
+
     title: qsTr("konoha")
     width: 800
     height: 600
@@ -28,7 +30,7 @@ ApplicationWindow {
             MenuItem {
                 text: qsTr("&Save")
                 onTriggered: () => {
-                    console.log("Save File");
+                    fileEditor.save_file(currentFileUrl, scratchView.getASTVM());
                 }
             }
             MenuItem {
@@ -113,6 +115,7 @@ ApplicationWindow {
         currentFolder: fileUrlHelper.root_dir
         onAccepted: () => {
             const fileURL = this.selectedFile.toString();
+            root.currentFileUrl = fileURL;
             const astvm = fileEditor.open_file(fileURL);
             scratchView.loadASTVM(astvm);
         }
