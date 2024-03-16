@@ -33,11 +33,11 @@ QtObject {
             for (const argPropertyName of stmt.argument_property_names) {
                 const arg = stmt[argPropertyName];
                 const inputType = stmt.input_argument_type_map[argPropertyName];
+                const argElement = argElementMap.get(argPropertyName);
                 if (inputType) {
-                    node.setInputElementValue(argPropertyName, arg);
+                    argElement.setValue(arg);
                     continue;
                 }
-                const argElement = argElementMap.get(argPropertyName);
                 this.createExpression(arg, undefined, argElement);
             }
             // create in-block sub-stmt recursively
