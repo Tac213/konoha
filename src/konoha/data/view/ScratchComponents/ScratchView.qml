@@ -55,4 +55,8 @@ Flickable {
     function getASTVM() {
         return handler.astvm;
     }
+
+    function getHandler() {
+        return handler;
+    }
 }

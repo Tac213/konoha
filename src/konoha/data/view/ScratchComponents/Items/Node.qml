@@ -173,9 +173,10 @@ Item {
     MouseArea {
         id: mouseArea
         anchors.fill: parent
-        acceptedButtons: Qt.LeftButton | Qt.RightButton
+        acceptedButtons: Qt.LeftButton
         drag.target: parent.snapped ? parent.getDragTarget() : parent
         preventStealing: true
+        propagateComposedEvents: true
         onReleased: event => {
             if (this.parent.Drag.target) {
                 const action = this.parent.Drag.drop();
@@ -195,7 +196,7 @@ Item {
             }
         }
         onClicked: event => {
-            if (event.button === Qt.RightButton) {
+            if (event.button === Qt.LeftButton) {
                 contextMenu.popup();
                 event.accepted = true;
             }
