@@ -5,6 +5,8 @@
 import sys
 from PySide6 import QtCore, QtQml
 
+from konoha import genv
+
 
 class EnhancedQmlApplicationEngine(QtQml.QQmlApplicationEngine):
     def __init__(self, entry_qml: str, parent: QtCore.QObject | None = None):
@@ -19,6 +21,7 @@ class EnhancedQmlApplicationEngine(QtQml.QQmlApplicationEngine):
         if self.is_release:  # pylint: disable=using-constant-test
             return
         self.clear_component_cache()
+        genv.logger.debug("Reloading: '%s'", self._entry_qml)
         self.load(self._entry_qml)
 
     @QtCore.Property(bool, constant=True)

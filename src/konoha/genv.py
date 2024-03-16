@@ -11,10 +11,17 @@ from konoha.log import logger as logger_module
 from konoha.log import log_manager
 from konoha.bridge import astvms
 
-logger = None  # type: logger_module.Logger
+if "logger" not in globals():
+    # Prevent reload from resetting the global variable
+    logger = None  # type: logger_module.Logger
+if "QML_ENGINE" not in globals():
+    # Prevent reload from resetting the global variable
+    QML_ENGINE = None  # type: QtQml.QQmlApplicationEngine
 
 
 def initialize(engine: QtQml.QQmlApplicationEngine) -> None:
+    global QML_ENGINE
+    QML_ENGINE = engine
     _init_logger()
     astvms.register_astvms(engine)
 

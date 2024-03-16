@@ -12,10 +12,13 @@ ALL_BRIDGE_MODULES = (
     "file_url_helper",
     "interactive_interpreter",
     "output_window_bridge",
+    "package_reloader",
     "syntax_highlighter",
 )
 
-output_window_bridge_object = None
+if "output_window_bridge_object" not in globals():
+    # Prevent reload from resetting the global variable
+    output_window_bridge_object = None
 
 
 def register_bridges() -> None:

@@ -9,6 +9,7 @@ import typing
 from PySide6 import QtCore, QtQml
 from __feature__ import snake_case, true_property  # pylint: disable=import-error,unused-import
 
+from konoha import genv
 from konoha.bridge.astvms import astvm
 
 ALL_ASTVM_MODULES = (
@@ -16,7 +17,10 @@ ALL_ASTVM_MODULES = (
     "statements",
     "root_nodes",
 )
-ASTVM_MAP: dict[str, astvm.ASTVM] = {}
+if "ASTVM_MAP" not in globals():
+    # Prevent reload from resetting the global variable
+    ASTVM_MAP: dict[str, astvm.ASTVM] = {}
+# ASTVM_COMPONENT_MAP will be regenerated when reload is performed
 ASTVM_COMPONENT_MAP: dict[str, QtQml.QQmlComponent] = {}
 
 
@@ -52,9 +56,10 @@ def ast_node(parent_class: type[astvm.ASTVM] = astvm.ASTVM) -> type[astvm.ASTVM]
     """
 
     def real_decorator(astvm_class: type[astvm.ASTVM]):
+        if astvm_class.__name__ in ASTVM_MAP:
+            genv.logger.warning("Duplicated ASTVM: '%s'", astvm_class.__name__)
         assert issubclass(astvm_class, parent_class), f"'{astvm_class.__name__}' is not a subclass of '{parent_class.__name__}'."
         QtQml.qmlRegisterType(astvm_class, "Python.ASTVM", 1, 0, _get_qml_type_name(astvm_class.__name__))
-        assert astvm_class.__name__ not in ASTVM_MAP, f"Duplicated ASTVM: '{astvm_class.__name__}'"
         ASTVM_MAP[astvm_class.__name__] = astvm_class
         return astvm_class
 

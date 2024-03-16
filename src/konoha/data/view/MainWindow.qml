@@ -6,6 +6,7 @@ import QtQuick.Dialogs
 import "ScratchComponents" as ScratchComponents
 import Python.FileUrlHelper  // qmllint disable import
 import Python.FileEditor  // qmllint disable import
+import Python.Reloader  // qmllint disable import
 
 ApplicationWindow {
     id: root
@@ -58,6 +59,12 @@ ApplicationWindow {
                     root.close();
                 }
             }
+            MenuItem {
+                text: qsTr("&Reload konoha")
+                onTriggered: () => {
+                    packageReloader.reload();
+                }
+            }
         }
     }
     RowLayout {
@@ -93,6 +100,9 @@ ApplicationWindow {
     }
     FileEditor {
         id: fileEditor
+    }
+    PackageReloader {
+        id: packageReloader
     }
 
     FileDialog {
