@@ -48,16 +48,18 @@ else()
   )
 endif()
 
-add_library(cpython::libpython3 SHARED IMPORTED GLOBAL)
-if(${WIN32})
-  set_target_properties(cpython::libpython3 PROPERTIES
-    IMPORTED_LOCATION ${PYTHON3_DLL}
-    IMPORTED_IMPLIB ${PYTHON3_LIB}
-  )
-else()
-  set_target_properties(cpython::libpython PROPERTIES
-    IMPORTED_LOCATION ${PYTHON3_LIB}
-  )
+if(NOT ${APPLE})
+  add_library(cpython::libpython3 SHARED IMPORTED GLOBAL)
+  if(${WIN32})
+    set_target_properties(cpython::libpython3 PROPERTIES
+      IMPORTED_LOCATION ${PYTHON3_DLL}
+      IMPORTED_IMPLIB ${PYTHON3_LIB}
+    )
+  else()
+    set_target_properties(cpython::libpython PROPERTIES
+      IMPORTED_LOCATION ${PYTHON3_LIB}
+    )
+  endif()
 endif()
 
 target_include_directories(cpython::libpython
