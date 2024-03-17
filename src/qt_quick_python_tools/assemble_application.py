@@ -407,6 +407,10 @@ def assemble_application(assemble_info: AssembleInfo) -> None:
             if assemble_info.ignore_platform_dynload:
                 continue
         level = module_name.count(".") + 1
+        file_basename = os.path.basename(module.__file__)
+        if "__init__" in file_basename:
+            # __init__.pyd
+            level += 1
         pyi_binaries.append(normalize_pyi_toc(module.__file__, "BINARY", level))
 
     # Get all dependencies of the binaries using PyInstaller's API
@@ -417,6 +421,17 @@ def assemble_application(assemble_info: AssembleInfo) -> None:
     for data in assemble_info.datas:
         relpath = os.path.relpath(data, generate_frozen_modules.ROOT_DIR)
         pyi_datas.append(normalize_pyi_toc(data, "DATA", dest=relpath))
+
+    # konoha-specific
+    import blib2to3  # pylint: disable=import-outside-toplevel
+
+    blib2to3_path = os.path.dirname(blib2to3.__file__)
+    grammar_path = os.path.join(blib2to3_path, "Grammar.txt")
+    grammar_relpath = os.path.join("blib2to3", "Grammar.txt")
+    pyi_datas.append(normalize_pyi_toc(grammar_path, "DATA", dest=grammar_relpath))
+    pattern_grammar_path = os.path.join(blib2to3_path, "PatternGrammar.txt")
+    pattern_grammar_relpath = os.path.join("blib2to3", "PatternGrammar.txt")
+    pyi_datas.append(normalize_pyi_toc(pattern_grammar_path, "DATA", dest=pattern_grammar_relpath))
 
     # Copy all binaries and datas to the output directory
     for dest, src, _ in itertools.chain(dependencies, pyi_datas):

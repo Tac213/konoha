@@ -21,7 +21,8 @@ dependencies = [
 dev = [
     "pylint",
     "pyinstaller>=6.4.0",
-    "toml"
+    "toml",
+    "debugpy"
 ]
 
 [tool.black]

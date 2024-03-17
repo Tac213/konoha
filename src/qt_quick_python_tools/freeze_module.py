@@ -28,6 +28,10 @@ def compile_and_marshal(name: str, text: bytes) -> bytes:
 
 
 def get_varname(name: str, prefix: str) -> str:
+    if "importlib_metadata" in name:
+        # importlib_metadata is a site-package on PyPI: https://pypi.org/project/importlib-metadata/
+        # The variable name of it conflicts with importlib.metadata, which is an official package
+        name = name.replace("importlib_metadata", "importlib_metadata_pypi")
     return f"{prefix}{name.replace('.', '_')}"
 
 

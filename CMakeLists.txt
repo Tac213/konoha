@@ -25,7 +25,7 @@ set(SOURCES
 if(FREEZE_APPLICATION)
   set(ENTRY_MODULE_NAME konoha)
   set(HIDDEN_IMPORTS "encodings.cp437,konoha.bridge.ast_editor,konoha.bridge.astvm_helper,konoha.bridge.file_editor,konoha.bridge.file_url_helper,konoha.bridge.interactive_interpreter,konoha.bridge.output_window_bridge,konoha.bridge.package_reloader,konoha.bridge.syntax_highlighter,konoha.bridge.astvms.expressions,konoha.bridge.astvms.root_nodes,konoha.bridge.astvms.statements")
-  set(EXCLUDES "test,unittest")
+  set(EXCLUDES "test,unittest,debugpy,black,_bz2,_decimal,_hashlib,_lzma,_socket,_ssl,_uuid,pyexpat,select,unicodedata")
 
   # Get frozen header file names
   execute_process(
@@ -113,6 +113,7 @@ if(${WIN32})
       "--pyside6-modules=PySide6.QtCore,PySide6.QtGui,PySide6.QtQuick,PySide6.QtQml"
       "--qml-directory=${CMAKE_CURRENT_SOURCE_DIR}/src/konoha/data/view"
       "--qt-quick-control-styles=Material"
+      "--dont-ignore-platform-dynload"
       COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:cpython::libpython3> ${CMAKE_CURRENT_SOURCE_DIR}/deployment
       WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
     )

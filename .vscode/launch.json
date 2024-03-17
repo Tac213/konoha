@@ -27,6 +27,16 @@
                     "VIRTUAL_ENV": "${workspaceFolder}\\.venv"
                 }
             }
+        },
+        {
+            "type": "debugpy",
+            "request": "attach",
+            "name": "Attach Python",
+            "connect": {
+                "host": "localhost",
+                "port": 36938
+            },
+            "justMyCode": false
         }
     ]
 }

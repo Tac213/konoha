@@ -15,6 +15,9 @@ import dataclasses
 import subprocess
 import shutil
 
+if os.environ.get("DEBUG"):
+    import debugpy
+
 # ROOT_DIR = os.path.normpath(os.path.join(__file__, "..", "..", ".."))
 ROOT_DIR = os.getcwd()
 FROZEN_MODULE_DIR = os.path.join(ROOT_DIR, "src", "frozen_modules")
@@ -139,6 +142,30 @@ def get_python_bootstrap_module_names() -> typing.List[str]:
     return bootstrap_module_names
 
 
+def get_black_module_names() -> typing.List[str]:
+    """
+    konoha-specific
+    Returns:
+        list
+    """
+    with subprocess.Popen(
+        f'{sys.executable} -c "import sys; import black; print(list(sys.modules.keys()))"',
+        shell=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    ) as p:
+        p.wait()
+        stdout, stderr = p.communicate()
+        if p.returncode:
+            usage(f"Could not get python bootstrap modules, {str(stderr, 'utf-8')}")
+        bootstrap_module_names: typing.List[str] = eval(stdout)  # pylint: disable=eval-used
+    return [
+        name
+        for name in bootstrap_module_names
+        if name.startswith(("black", "_black_version", "_ctypes", "platformdirs", "blib2to3", "secrets")) or name.endswith("mypyc")
+    ]
+
+
 def clear_frozen_module_dir() -> None:
     """
     Clear frozen module dir
@@ -237,6 +264,10 @@ def get_module_varname(name: str, prefix: str) -> str:
     Returns:
         varname
     """
+    if "importlib_metadata" in name:
+        # importlib_metadata is a site-package on PyPI: https://pypi.org/project/importlib-metadata/
+        # The variable name of it conflicts with importlib.metadata, which is an official package
+        name = name.replace("importlib_metadata", "importlib_metadata_pypi")
     return f"{prefix}{name.replace('.', '_')}"
 
 
@@ -265,6 +296,9 @@ def analyze_module(analysis_info: ModuleAnalysisInfo, module_type: ModuleType) -
     # copy from ${CPYTHON_SRC}/Tools/freeze/freeze.py
     bootstrap_module_names += ["site", "warnings", "encodings.utf_8", "encodings.latin_1"]
     hidden_imports += bootstrap_module_names
+    # konoha-specific
+    black_module_names = get_black_module_names()
+    hidden_imports += black_module_names
 
     module_info = get_module_info(analysis_info.entry_module_name, is_entry_module=True)
     additional_path = None
@@ -280,6 +314,11 @@ def analyze_module(analysis_info: ModuleAnalysisInfo, module_type: ModuleType) -
     if additional_path is not None:
         path.append(additional_path)
     finder = modulefinder.ModuleFinder(path=path, excludes=excludes)
+    # konoha-specific
+    import black  # pylint: disable=import-outside-toplevel
+
+    black_module = modulefinder.Module("black", black.__file__, black.__path__[:])
+    finder.modules[black_module.__name__] = black
 
     for hidden_import_name in hidden_imports:
         finder.import_hook(hidden_import_name)
@@ -388,6 +427,10 @@ def main() -> None:
     Returns:
         None
     """
+    if os.environ.get("DEBUG"):
+        debugpy.listen(("localhost", 36938))
+        debugpy.wait_for_client()
+
     options = []
 
     # option, function, error, description

@@ -79,7 +79,10 @@
                 "clear": true
             },
             "options": {
-                "cwd": "${workspaceFolder}"
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "DEBUG": "1"
+                }
             }
         },
         {
