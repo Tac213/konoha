@@ -17,7 +17,7 @@ def parse_by_file_path(file_path: str) -> ast.AST:
     """
     with io.open_code(file_path) as fp:
         tree = ast_extension.parse(fp.read(), filename=file_path)
-    genv.logger.info("AST of file '%s':\n%s", file_path, ast.dump(tree, indent=4))
+    genv.logger.info("Load AST of file '%s':\n%s", file_path, ast.dump(tree, indent=4))
     return tree
 
 
@@ -26,3 +26,4 @@ def unparse_to_file_path(tree: ast.AST, file_path) -> None:
         content = ast_extension.unparse(tree)
         content = black.format_str(content, mode=black.Mode())
         fp.write(content)
+    genv.logger.info("Save AST to file '%s':\n%s", file_path, ast.dump(tree, indent=4))

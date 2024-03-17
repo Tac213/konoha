@@ -4,6 +4,7 @@ QtObject {
     id: root
     required property var scene
     required property var view
+    required property var astEditor
     property var astvm: undefined
 
     function loadASTVM(astvm) {
@@ -71,7 +72,7 @@ QtObject {
             if (upperNode === undefined) {
                 return;
             }
-            this.snapStatement(upperNode, node, isBlock, blockIndex);
+            this.snapStatement(upperNode, node, isBlock, blockIndex, false);
         });
     }
 
@@ -160,7 +161,7 @@ QtObject {
     // TODO: modify view model
     }
 
-    function snapStatement(upperNode, lowerNode, isBlock, blockIndex) {
+    function snapStatement(upperNode, lowerNode, isBlock, blockIndex, modifyModel = true) {
         if (!upperNode.model.is_statement || !lowerNode.model.is_statement) {
             return;
         }
@@ -172,7 +173,13 @@ QtObject {
             lowerNode.x = 0;
             lowerNode.y = upperNode.height;
             upperNode.nextNode = lowerNode;
-            // TODO: Modify view model
+            if (modifyModel) {
+                if (this.astEditor.is_child(upperNode.model, this.astvm)) {
+                    this.astEditor.insert_statement(this.astvm, upperNode.model, lowerNode.model);
+                } else {
+                    this.astEditor.top_insert_statement(this.astvm, lowerNode.model, upperNode.model);
+                }
+            }
         } else {
             const snapIndicator = upperNode.blockContents[blockIndex].snapIndicator;
             lowerNode.x = snapIndicator.x + upperNode.getBlockOffset();

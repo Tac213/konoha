@@ -24,7 +24,7 @@ set(SOURCES
 
 if(FREEZE_APPLICATION)
   set(ENTRY_MODULE_NAME konoha)
-  set(HIDDEN_IMPORTS "encodings.cp437,konoha.bridge.astvm_helper,konoha.bridge.file_editor,konoha.bridge.file_url_helper,konoha.bridge.interactive_interpreter,konoha.bridge.output_window_bridge,konoha.bridge.package_reloader,konoha.bridge.syntax_highlighter,konoha.bridge.astvms.expressions,konoha.bridge.astvms.root_nodes,konoha.bridge.astvms.statements")
+  set(HIDDEN_IMPORTS "encodings.cp437,konoha.bridge.ast_editor,konoha.bridge.astvm_helper,konoha.bridge.file_editor,konoha.bridge.file_url_helper,konoha.bridge.interactive_interpreter,konoha.bridge.output_window_bridge,konoha.bridge.package_reloader,konoha.bridge.syntax_highlighter,konoha.bridge.astvms.expressions,konoha.bridge.astvms.root_nodes,konoha.bridge.astvms.statements")
   set(EXCLUDES "test,unittest")
 
   # Get frozen header file names

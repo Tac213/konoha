@@ -1,4 +1,5 @@
 import QtQuick
+import Python.ASTEditor
 
 Flickable {
     id: root
@@ -8,6 +9,10 @@ Flickable {
     contentX: 0
     contentY: 0
 
+    ASTEditor {
+        id: astEditor
+    }
+
     ScratchScene {
         id: scene
     }
@@ -16,6 +21,7 @@ Flickable {
         id: handler
         scene: scene
         view: root
+        astEditor: astEditor
     }
 
     ScratchContextMenu {

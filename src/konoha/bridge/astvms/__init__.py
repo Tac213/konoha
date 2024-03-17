@@ -13,6 +13,7 @@ from konoha import genv
 from konoha.bridge.astvms import astvm
 
 ASTVM_CATEGORY_SPLITTER = "|"
+# Remember to add this list to the hidden-import list
 ALL_ASTVM_MODULES = (
     "expressions",
     "statements",
