@@ -21,7 +21,6 @@ dependencies = [
 dev = [
     "pylint",
     "pyinstaller>=6.4.0",
-    "nuitka",
     "toml"
 ]
 

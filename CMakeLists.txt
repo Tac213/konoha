@@ -42,7 +42,6 @@ if(FREEZE_APPLICATION)
 
   add_custom_command(
     OUTPUT ${_frozen_headers}
-    COMMAND ${PYTHON_EXECUTABLE} "-m" "qt_quick_python_tools.resource_compiler"
     COMMAND
     ${CMAKE_CROSSCOMPILING_EMULATOR} ${PYTHON_EXECUTABLE} "-m" "qt_quick_python_tools.generate_frozen_modules" "--make-freeze"
     "${ENTRY_MODULE_NAME}" "--hidden-imports=${HIDDEN_IMPORTS}" "--excludes=${EXCLUDES}"
@@ -111,6 +110,7 @@ if(${WIN32})
       "--pyside6-modules=PySide6.QtCore,PySide6.QtGui,PySide6.QtQuick,PySide6.QtQml"
       "--qml-directory=${CMAKE_CURRENT_SOURCE_DIR}/src/konoha/data/view"
       "--qt-quick-control-styles=Material"
+      COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:cpython::libpython3> ${CMAKE_CURRENT_SOURCE_DIR}/deployment
       WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
     )
   endif()

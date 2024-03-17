@@ -48,7 +48,7 @@ else()
   )
 endif()
 
-if(NOT ${APPLE})
+if(NOT (${CMAKE_SYSTEM_NAME} STREQUAL "Darwin"))
   add_library(cpython::libpython3 SHARED IMPORTED GLOBAL)
   if(${WIN32})
     set_target_properties(cpython::libpython3 PROPERTIES

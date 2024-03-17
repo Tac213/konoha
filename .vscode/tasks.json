@@ -2,13 +2,22 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Deploy(Release PyInstaller)",
+            "label": "Deploy(Release)",
+            "type": "shell",
+            "dependsOrder": "sequence",
+            "dependsOn": ["Remove Frozen Directory", "Compile Qt Resource", "Configure Release Frozen", "Build Frozen"]
+        },
+        {
+            "label": "Deploy(Debug)",
+            "type": "shell",
+            "dependsOrder": "sequence",
+            "dependsOn": ["Remove Frozen Directory", "Compile Qt Resource", "Configure Debug Frozen", "Build Frozen"]
+        },
+        {
+            "label": "Remove Frozen Directory",
             "type": "process",
-            "command": "${workspaceFolder}/.venv/bin/python",
-            "windows": {
-                "command": "${workspaceFolder}\\.venv\\Scripts\\python.exe"
-            },
-            "args": ["-m", "qt_quick_python_tools.deploy", "-t", "pyinstaller"],
+            "command": "cmake",
+            "args": ["-E", "remove_directory", "${workspaceFolder}/build/Frozen"],
             "presentation": {
                 "echo": true,
                 "reveal": "always",
@@ -22,13 +31,10 @@
             }
         },
         {
-            "label": "Deploy(Release Nuitka)",
+            "label": "Configure Release Frozen",
             "type": "process",
-            "command": "${workspaceFolder}/.venv/bin/python",
-            "windows": {
-                "command": "${workspaceFolder}\\.venv\\Scripts\\python.exe"
-            },
-            "args": ["-m", "qt_quick_python_tools.deploy", "-t", "nuitka"],
+            "command": "cmake",
+            "args": ["-B", "${workspaceFolder}/build/Frozen", "-S", "${workspaceFolder}", "-G", "Visual Studio 17 2022", "-DNEED_CONSOLE=OFF", "-DFREEZE_APPLICATION=ON", "-DCMAKE_BUILD_TYPE:STRING=Release"],
             "presentation": {
                 "echo": true,
                 "reveal": "always",
@@ -42,13 +48,10 @@
             }
         },
         {
-            "label": "Deploy(Debug PyInstaller)",
+            "label": "Configure Debug Frozen",
             "type": "process",
-            "command": "${workspaceFolder}/.venv/bin/python",
-            "windows": {
-                "command": "${workspaceFolder}\\.venv\\Scripts\\python.exe"
-            },
-            "args": ["-m", "qt_quick_python_tools.deploy", "-t", "pyinstaller", "--variant", "debug"],
+            "command": "cmake",
+            "args": ["-B", "${workspaceFolder}/build/Frozen", "-S", "${workspaceFolder}", "-G", "Visual Studio 17 2022", "-DNEED_CONSOLE=ON", "-DFREEZE_APPLICATION=ON", "-DCMAKE_BUILD_TYPE:STRING=Release"],
             "presentation": {
                 "echo": true,
                 "reveal": "always",
@@ -62,13 +65,10 @@
             }
         },
         {
-            "label": "Deploy(Debug Nuitka)",
+            "label": "Build Frozen",
             "type": "process",
-            "command": "${workspaceFolder}/.venv/bin/python",
-            "windows": {
-                "command": "${workspaceFolder}\\.venv\\Scripts\\python.exe"
-            },
-            "args": ["-m", "qt_quick_python_tools.deploy", "-t", "nuitka", "--variant", "debug"],
+            "command": "cmake",
+            "args": ["--build", "${workspaceFolder}/build/Frozen", "--config", "Release", "--", "-maxCpuCount:20"],
             "presentation": {
                 "echo": true,
                 "reveal": "always",

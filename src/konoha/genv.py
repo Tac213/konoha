@@ -31,6 +31,8 @@ def _init_logger() -> None:
     if not os.path.isdir(path_const.LOG_DIR):
         os.mkdir(path_const.LOG_DIR)
     log_manager.LogManager.setup_std_logger()
+    if QML_ENGINE.is_release:
+        log_manager.LogManager.set_level(log_manager.LogLevel.INFO)
     logger = log_manager.LogManager.get_logger(app_const.APP_NAME, save_file=True, dirname=path_const.LOG_DIR)
 
 
