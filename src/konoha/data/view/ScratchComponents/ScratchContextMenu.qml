@@ -39,9 +39,9 @@ Menu {
                     const posX = (this.parent.contentX + this.x) / this.handler.scene.currentZoom;
                     const posY = (this.parent.contentY + this.y) / this.handler.scene.currentZoom;
                     if (astvm.is_statement) {
-                        this.handler.createStatement(astvm, posX = posX, posY = posY);
+                        this.handler.createStatement(astvm, undefined, undefined, false, 0, posX, posY);
                     } else {
-                        this.handler.createExpression(astvm, posX = posX, posY = posY);
+                        this.handler.createExpression(astvm, undefined, undefined, posX, posY);
                     }
                 });
             });

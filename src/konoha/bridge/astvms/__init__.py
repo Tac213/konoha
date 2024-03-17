@@ -82,7 +82,9 @@ def register_astvms(engine: QtQml.QQmlApplicationEngine) -> None:
         ASTVM_COMPONENT_MAP[astvm_name] = component
 
 
-def create_astvm(tree: ast.AST) -> astvm.ASTVM:
+def create_astvm(tree: ast.AST | None) -> astvm.ASTVM | None:
+    if tree is None:
+        return None
     astvm_class_name = tree.__class__.__name__
     astvm_component = ASTVM_COMPONENT_MAP.get(astvm_class_name)
     assert astvm_component is not None, f"No such astvm: '{astvm_class_name}'"
