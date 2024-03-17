@@ -34,9 +34,16 @@ Menu {
                 "text": astvmShowName
             }, action => {
                 this.astvmActions[action.astvmClassName] = action;
-                action.triggered.connect(
-                // this.handler.createNode(action.astvmClassName, (this.parent.contentX + this.x) / this.handler.scene.currentZoom, (this.parent.contentY + this.y) / this.handler.scene.currentZoom);
-                () => {});
+                action.triggered.connect(() => {
+                    const astvm = astvmHelper.create_astvm(action.astvmClassName);
+                    const posX = (this.parent.contentX + this.x) / this.handler.scene.currentZoom;
+                    const posY = (this.parent.contentY + this.y) / this.handler.scene.currentZoom;
+                    if (astvm.is_statement) {
+                        this.handler.createStatement(astvm, posX = posX, posY = posY);
+                    } else {
+                        this.handler.createExpression(astvm, posX = posX, posY = posY);
+                    }
+                });
             });
         }
     }
