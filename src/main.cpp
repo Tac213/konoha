@@ -160,43 +160,32 @@ WinMain(HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR lpCmdLine, int nShowCmd) // 
     exitcode = Py_RunMain();
 #else
     // Set sys._stdlib_dir manually
-    PyObject *sysmodule, *stdlib_dir_value;
+    PyObject *stdlib_dir_value;
 
     const auto* stdlibdir = executable_directory.c_str();
 
-    sysmodule = PyImport_ImportModule("sys");
-    if (sysmodule == nullptr)
-    {
-        fprintf(stderr, "Could not import sys module\n");
-        PyErr_Print();
-        return 1;
-    }
     stdlib_dir_value = PyUnicode_FromWideChar(stdlibdir, wcslen(stdlibdir));
     if (stdlib_dir_value == nullptr)
     {
         fprintf(stderr, "Could not convert directory name to unicode\n");
-        Py_DECREF(sysmodule);
         PyErr_Print();
         return 1;
     }
-    if (PyObject_SetAttrString(sysmodule, "_stdlib_dir", stdlib_dir_value) == -1)
+    if (PySys_SetObject("_stdlib_dir", stdlib_dir_value) == -1)
     {
         fprintf(stderr, "Could not set sys._stdlib_dir\n");
-        Py_DECREF(sysmodule);
         Py_DECREF(stdlib_dir_value);
         PyErr_Print();
         return 1;
     }
     Py_DECREF(stdlib_dir_value);
     // Set sys.frozen
-    if (PyObject_SetAttrString(sysmodule, "frozen", Py_True) == -1)
+    if (PySys_SetObject("frozen", Py_True) == -1)
     {
         fprintf(stderr, "Could not set sys.frozen\n");
-        Py_DECREF(sysmodule);
         PyErr_Print();
         return 1;
     }
-    Py_DECREF(sysmodule);
     exitcode = pymain_run_module(L"__main__", 0);
 #endif // !defined(FREEZE_APPLICATION)
 

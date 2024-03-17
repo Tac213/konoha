@@ -34,7 +34,16 @@
             "label": "Configure Release Frozen",
             "type": "process",
             "command": "cmake",
-            "args": ["-B", "${workspaceFolder}/build/Frozen", "-S", "${workspaceFolder}", "-G", "Visual Studio 17 2022", "-DNEED_CONSOLE=OFF", "-DFREEZE_APPLICATION=ON", "-DCMAKE_BUILD_TYPE:STRING=Release"],
+            "args": [
+                "-B",
+                "${workspaceFolder}/build/Frozen",
+                "-S",
+                "${workspaceFolder}",
+                "-G",
+                "Visual Studio 17 2022",
+                "-DNEED_CONSOLE=OFF",
+                "-DFREEZE_APPLICATION=ON"
+            ],
             "presentation": {
                 "echo": true,
                 "reveal": "always",
@@ -51,7 +60,16 @@
             "label": "Configure Debug Frozen",
             "type": "process",
             "command": "cmake",
-            "args": ["-B", "${workspaceFolder}/build/Frozen", "-S", "${workspaceFolder}", "-G", "Visual Studio 17 2022", "-DNEED_CONSOLE=ON", "-DFREEZE_APPLICATION=ON", "-DCMAKE_BUILD_TYPE:STRING=Release"],
+            "args": [
+                "-B",
+                "${workspaceFolder}/build/Frozen",
+                "-S",
+                "${workspaceFolder}",
+                "-G",
+                "Visual Studio 17 2022",
+                "-DNEED_CONSOLE=ON",
+                "-DFREEZE_APPLICATION=ON"
+            ],
             "presentation": {
                 "echo": true,
                 "reveal": "always",

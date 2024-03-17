@@ -57,13 +57,16 @@ if(FREEZE_APPLICATION)
   )
 endif()
 
-add_executable(${PROJECT_NAME}
-  ${SOURCES}
+# Add icons
+include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/add_icon_to_binary.cmake)
+add_icon_to_binary(SOURCES ICONS
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/konoha/data/resource/icon.ico
+  # Add MacOS icns file if you have one
+  # ${CMAKE_CURRENT_SOURCE_DIR}/resource/icon.icns
 )
 
-target_include_directories(${PROJECT_NAME}
-PRIVATE
-  ${PYTHON_INCLUDE_DIR}
+add_executable(${PROJECT_NAME}
+  ${SOURCES}
 )
 
 if(NEED_CONSOLE)

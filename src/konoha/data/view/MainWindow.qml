@@ -57,6 +57,9 @@ ApplicationWindow {
             MenuItem {
                 text: qsTr("&Reload Qml")
                 onTriggered: () => {
+                    if (qmlEngine.is_release) {
+                        return;
+                    }
                     qmlEngine.reload();
                     root.close();
                 }
@@ -84,6 +87,9 @@ ApplicationWindow {
             if (event.key === Qt.Key_QuoteLeft) {
                 root.toggleConsoleWindow();
             } else if (event.key === Qt.Key_F5) {
+                if (qmlEngine.is_release) {
+                    return;
+                }
                 qmlEngine.reload();
                 root.close();
             }
