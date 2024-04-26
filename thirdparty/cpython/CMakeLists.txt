@@ -56,7 +56,7 @@ if(NOT (${CMAKE_SYSTEM_NAME} STREQUAL "Darwin"))
       IMPORTED_IMPLIB ${PYTHON3_LIB}
     )
   else()
-    set_target_properties(cpython::libpython PROPERTIES
+    set_target_properties(cpython::libpython3 PROPERTIES
       IMPORTED_LOCATION ${PYTHON3_LIB}
     )
   endif()
