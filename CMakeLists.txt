@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.4...3.18)
 project(konoha)
+set(PROJECT_VERSION "1.0.0")
 
 set(CMAKE_CXX_STANDARD 20)
 
@@ -108,6 +109,7 @@ if(${WIN32})
   endif()
   if(FREEZE_APPLICATION)
     add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+      COMMAND ${PYTHON_EXECUTABLE} "-m" "qt_quick_python_tools.code_sign" $<TARGET_FILE:${PROJECT_NAME}>
       COMMAND ${PYTHON_EXECUTABLE} "-m" "qt_quick_python_tools.assemble_application"
       "${ENTRY_MODULE_NAME}" "--hidden-imports=${HIDDEN_IMPORTS}" "--excludes=${EXCLUDES}" "--binaries=$<TARGET_FILE:${PROJECT_NAME}>,$<TARGET_FILE:cpython::libpython3>"
       "--pyside6-modules=PySide6.QtCore,PySide6.QtGui,PySide6.QtQuick,PySide6.QtQml"
